@@ -1,0 +1,3 @@
+import test from 'node:test';import assert from 'node:assert/strict';import {summarize,formatValue,csv} from '../lib/readings.mjs';
+test('missing readings are not interpreted as zero',()=>{assert.equal(formatValue(null),'—');assert.equal(formatValue(NaN),'—');assert.deepEqual(summarize([{'hum soil':null},{'hum soil':0},{'hum soil':20}],'hum soil'),{min:0,max:20,avg:10});assert.equal(summarize([],'hum soil'),null);});
+test('CSV preserves spaced column names, missing values and ordering',()=>{const result=csv([{id:2,'temp air':null,'hum soil':0,'hum air':65,'electric wind':3.4}]);assert.ok(result.includes('id,temp air,hum soil,hum air,electric wind'));assert.ok(result.includes('"2",,"0","65","3.4"'));});
